@@ -1,0 +1,67 @@
+package java112.employee;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import java.util.*;
+
+/**
+ * This servlet performs initialization for the employee application 
+ * and loads when the application starts
+ * @author    sschwert
+ */
+ 
+@WebServlet (
+	name = "applicationStartup",
+	loadOnStartup = 1,
+	urlPatterns = { "/project4-startup" }
+)
+
+/**
+* The ApplicationStartup class performs initialization for the employee application
+* and is a decendant of HttpServlet
+*/
+public class ApplicationStartup extends HttpServlet {
+
+	///////-----INSTANCE VARIABLES----/////////
+	private Properties properties;
+	
+	/**
+	* the init method instantiates the properties object and calls the loadProperties method
+	* @exception ServletException from the properties object, to be dealt with later...
+	*/
+	public void init() throws ServletException {
+		properties = new Properties();
+		
+		loadProperties();
+		
+		ServletContext context = getServletContext();
+		context.setAttribute("project4Properties", properties);
+		
+		EmployeeDirectory directory = new EmployeeDirectory(properties);
+		context.setAttribute("employeeDirectory", directory);
+		
+	}
+	
+	/**
+	* the loadProperties method sends the propertiesFilePath to the getResourceAsStream method 
+	* in a try/catch block
+	* @param propertiesFilePath is a string representing the location of the properties file
+	*/
+	public void loadProperties() {
+		
+		String propertiesFilePath = "/project4.properties";
+		
+		try {
+			properties.load(this.getClass().getResourceAsStream(propertiesFilePath));
+			
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+	}
+	
+
+}//ends ApplicationStartup class

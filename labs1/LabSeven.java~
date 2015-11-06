@@ -1,0 +1,58 @@
+package java112.labs1;
+import java.io.*;
+import java.util.*;
+
+/**
+*@author sschwert
+*/
+
+public class LabSeven {
+	
+	private List<String> list;
+	
+	public static void main(String[] args) {
+		if (args.length != 1) {
+			System.out.println("Please enter one argument on the command line, an output file name");
+		} else {
+			LabSeven kumquat = new LabSeven();
+			kumquat.run(args[0]);
+		}	
+	}
+	
+	public void run(String filePath) {
+		
+		list = new ArrayList<String>();
+		
+		list.add("one");
+		list.add("two");
+		list.add("three");
+		list.add("four");
+		list.add("five");
+		list.add("six");
+		list.add("seven");
+		list.add("eight");
+		list.add("nine");
+		list.add("ten");
+		
+		self.writeListToOutputFile("file");
+		
+	}
+	
+	public void writeListToOuputFile(String outputFilePath) {
+	
+		try(PrintWriter outWriter = new PrintWriter(new BufferedWriter(new FileWriter("src/" + outputFilePath, true)))) {
+			System.out.println("here");
+		} catch (FileNotFoundException fileNotFound) {
+			System.out.println("Hide and seek?");
+			fileNotFound.printStackTrace();
+		} catch (IOException ioException) {
+			System.out.println("I can't read and write good");
+			ioException.printStackTrace();
+		} catch (Exception exception) {
+			System.out.println("Mo' code, mo' problems");
+			exception.printStackTrace();
+		}
+
+	}
+	
+}

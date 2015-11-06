@@ -1,0 +1,305 @@
+package java112.employee;
+import java.io.*;
+import java.util.*;
+import java.sql.*;
+
+/**
+ * 
+ * @author    sschwert
+ */
+ 
+public class EmployeeDirectory {
+	
+	///////-----INSTANCE VARIABLES----/////////
+	private Properties properties;
+	
+	////////-----EMPTY CONSTRUCTOR-----////////
+	/**
+	* Empty constructor for the EmployeeDirectory class
+	*/
+	public EmployeeDirectory() {
+	
+	}
+	
+	////////-----ONE PARAM CONSTRUCTOR-----////////
+	/**
+	* Constructor for the EmployeeDirectory object calls the empty constructor
+	* @param property is a Properties object containing properties from the properties file
+	*/
+	public EmployeeDirectory(Properties properties) {
+		this();
+		this.properties = properties;
+	}
+	
+	/**
+	* the getDatabaseConnection method establishes a connection tot he database 
+	* and returns the connection the calling method
+	* @return Connection is the connection to the database
+	* @exception ClassNotFoundException from the forName method to be dealt with later
+	* @exception SQLException from the getConnection method to be dealt with later
+	*/
+	private Connection getDatabaseConnection() {
+		
+		Connection connection = null;
+		
+		try {
+			Class.forName(properties.getProperty("driver"));
+			connection = DriverManager.getConnection(properties.getProperty("url"), 
+				properties.getProperty("username"), properties.getProperty("password"));
+			
+		} catch (ClassNotFoundException classNotFound) {
+            System.err.println("Cannot find database driver ");
+            classNotFound.printStackTrace();
+        } catch (SQLException sqlException) {
+            System.err.println("Error in connection.ecting to database "
+                    + sqlException);
+            sqlException.printStackTrace();
+        } catch (Exception exception) {
+            System.err.println("General Error");
+            exception.printStackTrace();
+        }
+			
+        return connection;
+			
+        
+	}
+	
+	/**
+	* the addRecords method will add a new record to the Employee table in the database
+	* @param id is the employee id from the Employee class
+	* @param firstName is the first name from the Employee class
+	* @param lastName is the last name from the Employee class
+	* @param ssn is the ssn from the Employee class
+	* @param department is the department from the Employee class
+	* @param roomNumber is the roomNumber from the Employee class
+	* @param phoneNumber is the phoneNumber from the Employee class
+	*/
+	public void addRecords(String id,
+						String firstName,
+						String lastName,
+						String ssn,
+						String department,
+						String roomNumber,
+						String phoneNumber) {
+		
+		Connection connection = getDatabaseConnection();
+		Statement statement = null;
+		Employee employee = new Employee();
+		
+		try {
+			statement = connection.createStatement();
+			
+			id = employee.getId();
+			firstName = employee.getFirstName();
+			lastName = employee.getLastName();
+			ssn = employee.getSsn();
+			department = employee.getDepartment();
+			roomNumber = employee.getRoomNumber();
+			phoneNumber = employee.getPhoneNumber();
+
+			String sql = "INSERT INTO employees VALUES (first_name, last_name, ssn, dept, room, phone)" +
+						"VALUES ('" + firstName + "','" + lastName + "','" + ssn + "','" + department + "','" + roomNumber + "','" + phoneNumber + "')";
+	  
+			System.out.println("queryString: " + sql);
+
+			
+			int numberOfRowsAffected = statement.executeUpdate(sql);
+						
+			statement.executeUpdate(sql);
+			System.out.println("Just inserted: " + numberOfRowsAffected + " rows");
+			
+			System.out.println("Inserted records into the table...");
+			
+        } catch (SQLException sqlException) {
+            System.err.println("Error in connection.ecting to database "
+                    + sqlException);
+            sqlException.printStackTrace();
+        } catch (Exception exception) {
+            System.err.println("General Error");
+            exception.printStackTrace();
+        } finally {
+            try {
+  
+                if (statement != null) {
+                    statement.close();
+                }
+  
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException sqlException) {
+                System.err.println("Error in connection.ecting to database "
+                        + sqlException);
+                sqlException.printStackTrace();
+            } catch (Exception exception) {
+                System.err.println("General Error");
+                exception.printStackTrace();
+            }
+        }
+
+	}
+	
+	/**
+	* the searchById method will search for an Employee in the database by employee id
+	*/
+	public void searchById(Search search) {
+		
+		search = new Search();
+		Connection connection = getDatabaseConnection();
+		Statement statement = null;
+		ResultSet resultSet = null;
+		
+		try {
+            Class.forName(properties.getProperty("driver"));
+			connection = DriverManager.getConnection(properties.getProperty("url"), 
+				properties.getProperty("username"), properties.getProperty("password"));
+  
+            statement = connection.createStatement();
+  
+            //String searchId = "120";
+            String queryString = "SELECT emp_id, first_name, last_name, ssn, dept, room, phone"
+                    + " FROM employees " + "WHERE emp_id = '"
+                    + search.getSearchTerm() + "'";
+  
+            System.out.println("queryString: " + queryString);
+  
+            resultSet = statement.executeQuery(queryString);
+            
+            if (resultSet != null) {
+            	search.setEmployeeFound(true);
+            	
+            	while (resultSet.next()) {
+            	Employee employee = new Employee();
+            	
+                employee.setId(resultSet.getString("emp_id"));
+                employee.setFirstName(resultSet.getString("first_name"));
+                employee.setLastName(resultSet.getString("last_name"));
+                employee.setSsn(resultSet.getString("ssn"));
+                employee.setDepartment(resultSet.getString("dept"));
+                employee.setRoomNumber(resultSet.getString("room"));
+                employee.setPhoneNumber(resultSet.getString("phone"));
+                
+                search.addFoundEmployee(employee);
+
+                }
+
+            } else {
+            	search.setEmployeeFound(false);
+            }
+
+  
+        } catch (ClassNotFoundException classNotFound) {
+            System.err.println("Cannot find database driver ");
+            classNotFound.printStackTrace();
+        } catch (SQLException sqlException) {
+            System.err.println("Error in connection.ecting to database "
+                    + sqlException);
+            sqlException.printStackTrace();
+        } catch (Exception exception) {
+            System.err.println("General Error");
+            exception.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+  
+                if (statement != null) {
+                    statement.close();
+                }
+  
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException sqlException) {
+                System.err.println("Error in connection.ecting to database "
+                        + sqlException);
+                sqlException.printStackTrace();
+            } catch (Exception exception) {
+                System.err.println("General Error");
+                exception.printStackTrace();
+            }
+        }
+		
+	}
+	
+	/**
+	* the searchByLastName method will search for an Employee in the database by last name
+	*/
+	public void searchByLastName(Search search) {
+		
+		search = new Search();
+		Connection connection = getDatabaseConnection();
+		Statement statement = null;
+		ResultSet resultSet = null;
+		
+		try {
+            Class.forName(properties.getProperty("driver"));
+			connection = DriverManager.getConnection(properties.getProperty("url"), 
+				properties.getProperty("username"), properties.getProperty("password"));
+  
+            statement = connection.createStatement();
+  
+            //String searchId = "Smith";
+            String queryString = "SELECT emp_id, first_name, last_name, ssn, dept, room, phone"
+                    + " FROM employees " + "WHERE last_name LIKE '"
+                    + search.getSearchTerm() + "'";
+  
+            System.out.println("queryString: " + queryString);
+  
+            resultSet = statement.executeQuery(queryString);
+  
+            System.out.println();
+  
+            while (resultSet.next()) {
+            	Employee employee = new Employee();
+            	
+                employee.setId(resultSet.getString("emp_id"));
+                employee.setFirstName(resultSet.getString("first_name"));
+                employee.setLastName(resultSet.getString("last_name"));
+                employee.setSsn(resultSet.getString("ssn"));
+                employee.setDepartment(resultSet.getString("dept"));
+                employee.setRoomNumber(resultSet.getString("room"));
+                employee.setPhoneNumber(resultSet.getString("phone"));
+                
+                search.addFoundEmployee(employee);
+
+            }
+  
+        } catch (ClassNotFoundException classNotFound) {
+            System.err.println("Cannot find database driver ");
+            classNotFound.printStackTrace();
+        } catch (SQLException sqlException) {
+            System.err.println("Error in connection.ecting to database "
+                    + sqlException);
+            sqlException.printStackTrace();
+        } catch (Exception exception) {
+            System.err.println("General Error");
+            exception.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+  
+                if (statement != null) {
+                    statement.close();
+                }
+  
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException sqlException) {
+                System.err.println("Error in connection.ecting to database "
+                        + sqlException);
+                sqlException.printStackTrace();
+            } catch (Exception exception) {
+                System.err.println("General Error");
+                exception.printStackTrace();
+            }
+        }
+		
+	}
+	
+
+}//ends EmployeeDirectory class

@@ -1,0 +1,133 @@
+package java112.analyzer;
+import java.io.*;
+import java.util.*;
+
+/**
+* The Big Word Analyzer Class will store unique tokens that are big
+* @author sschwert
+*/
+
+public class BigWordAnalyzer implements Analyzer {
+  
+    // Only allowed instance variables
+    private Properties properties;
+    private Set<String> bigWords;
+    private int minimumWordLength;
+    
+      
+	////////-----EMPTY CONSTRUCTOR-----////////
+	/**
+    * empty constructor for BigWordAnalyzer class instantiates the TreeSet
+    */
+	public BigWordAnalyzer() {
+		
+		bigWords = new TreeSet<String>();
+		
+	}
+	
+	////////-----ONE PARAM CONSTRUCTOR-----////////
+	/**
+    * constructor for BigWordAnalyzer class calls the empty constructor
+    * @param properties is a Properties object containing properties from the properties file
+    */
+	public BigWordAnalyzer(Properties properties) {
+		this();
+		this.properties = properties;
+        }
+    
+    /**
+	* The process token method is from the interface and will test the tokens/words
+	* as they arrive from AnalyzeFile and add tokens to the bigWords array if they are big
+	* @param word a String that is a single token from AnalyzeFile
+	*/
+	public void processToken(String word) {
+		
+		int bigWordLength = word.length();
+		
+		////////////----PAULA SAYS TO MODULARIZE THIS BETTER-------//////////////
+		// ------- I moved it to the getBigWordLength method and put it in the get methods section
+		//minimumWordLength = Integer.parseInt(properties.getProperty("bigwords.minimum.length"));
+		
+		if (bigWordLength >= getBigWordLength()) {		
+			getBigWords().add(word);
+		}
+	
+	}
+	
+	/**
+	* The writeOutputFile method is from the interface and will call the method that will
+	* create a file containing all of the big words from the file
+	* @param inputFilePath String for the input file path from the command line
+	*/
+	public void writeOutputFile(String inputFilePath) {
+		
+		String outputFilePathToken = properties.getProperty("output.dir") + properties.getProperty("output.file.bigwords");
+		
+		try(PrintWriter outWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputFilePathToken, false)))) {
+			
+			printBigWords(outWriter);
+			
+		} catch (FileNotFoundException fileNotFound) {
+			System.out.println("Hide and seek?");
+			fileNotFound.printStackTrace();
+		} catch (IOException ioException) {
+			System.out.println("I can't read and write good");
+			ioException.printStackTrace();
+		} catch (Exception exception) {
+			System.out.println("Mo' code, mo' problems");
+			exception.printStackTrace();
+		}
+		
+	}//end writeOutputFile method
+	
+	
+	/**
+	* the printBigWords method writes each token in the bigWords Set (by calling the get method) 
+	* to the file and prints the number of big words to the command line (by calling the getBigWordsCount method)
+	* @param writer is a PrintWriter
+	* @exception IOException from the print writer, to be dealt with later...
+	*/
+	public void printBigWords(PrintWriter writer) throws IOException {
+		
+		for (String word : getBigWords()) { 
+			writer.println(word);
+		}
+			
+		System.out.println("Total number of Big Words: " + getBigWordsCount());
+	}
+	
+	///////-----GET METHODS----/////////
+	/**
+	*This is the get method for the bigWords instance variable
+	*@return bigWords a Set that is the list of unique words that are large
+	*/
+	public Set<String> getBigWords() {
+		return bigWords;
+	}
+	
+	public int getBigWordLength() {
+		
+		int minimumWordLength = Integer.parseInt(properties.getProperty("bigwords.minimum.length"));
+		
+		return minimumWordLength;
+	
+	}
+	
+	
+	/**
+	*This is the get method for the count of all the big words
+	*@return bigWordsCount which is the count of each unique item in the bigWords Set
+	*/
+	public int getBigWordsCount() {
+		
+		int bigWordsCount = 0;
+		
+		for (String wordYall : bigWords) {
+			bigWordsCount ++;
+		}
+		
+		return bigWordsCount;
+	}
+  
+	
+}//end of BigWordAnalyzer class

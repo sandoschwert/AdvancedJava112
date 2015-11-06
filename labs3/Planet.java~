@@ -1,0 +1,27 @@
+package java112.project3;
+ 
+/**
+ *  
+ *
+ *@author   sschwert and dhafenstein
+ */
+public class Planet extends java.lang.Object {
+ 
+	Private Arraylist<QuizBean> QuizBeanArray;
+	
+	QuizBeanArray = new Arraylist<QuizBean>();
+	
+	QuizBean quizBeanOne = new QuizBean();
+	
+	quizBeanOne.setQuestion("");
+	quizBeanOne.setAnswer("");
+	quizBeanOne.setHint("");
+	quizBeanOne.setPicturePath("");
+	
+	QuizBeanArray.add(quizBeanOne);
+	
+	
+ 
+
+ 
+}

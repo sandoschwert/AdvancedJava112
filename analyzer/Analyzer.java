@@ -1,0 +1,24 @@
+package java112.analyzer;
+import java.io.*;
+import java.util.*;
+
+/**
+* The Analyzer interface must be implemented by any class that performs an analysis
+* @author sschwert
+*/
+
+public interface Analyzer {
+
+	/**
+	* This is the method signature for the processToken method, to be implemented later
+	* @param token a String, its value will be determined by the child classes
+	*/
+	void processToken(String token);
+	
+	/**
+	* This is the method signature for the writeOutputFile method, to be implemented later
+	* @param inputFilePath a String, its value be determined by the child classes	
+	*/
+	void writeOutputFile(String inputFilePath);
+	
+}

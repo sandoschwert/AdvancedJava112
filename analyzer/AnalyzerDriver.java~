@@ -1,0 +1,24 @@
+package java112.analyzer;
+import java.io.*;
+import java.util.*;
+
+/**
+* @author sschwert
+* The AnalyzerDriver class will instantiate an instance of the 
+* project’s main processing class and begin the analyzing process
+*/
+
+public class AnalyzerDriver {
+	
+	/** 
+	*This is the main method it is the entrance point for the program
+	* The main method will instantiate the AnalyzeFile class which has the main processig method
+	*/
+	public static void main(String[] args) {
+		
+		AnalyzeFile analyzer = new AnalyzeFile();
+		
+			analyzer.runAnalysis(args);
+		
+	}
+}

@@ -1,0 +1,60 @@
+package java112.employee;
+import java.io.*;
+import java.util.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+ 
+/**
+ * This class will perform searches for employees
+ *
+ * @author sschwert
+ */
+@WebServlet(
+    name = "searchResultsServlet", 
+    urlPatterns = { "/results-servlet" }
+)
+ 
+public class SearchResultsServlet extends HttpServlet {
+ 
+    /**
+     *  Handles HTTP GET requests.
+     *
+     *@param  request               the HttpServletRequest object
+     *@param  response              the HttpServletResponse object
+     *@exception  ServletException  if there is a Servlet failure 
+     *@exception  IOException       if there is an IO failure
+     */
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+    	String searchTerm = request.getParameter("searchTerm");
+    	String searchType = request.getParameter("searchType");
+    	Search newSearch = new Search();
+    	EmployeeDirectory newDirectory = null;
+    	ServletContext context = getServletContext();
+    	HttpSession session = request.getSession();
+    	
+    	newSearch.setSearchTerm(searchTerm);
+    	newSearch.setSearchType(searchType);
+    	
+    	newDirectory = (EmployeeDirectory)context.getAttribute("employeeDirectory");
+
+        newDirectory.searchByLastName(newSearch.getSearchTerm());
+        newDirectory.searchById(newSearch.getSearchTerm());
+        //add the requestData instance to the request using setAttribute()
+        //request.setAttribute("requestDataProject3", requestData);
+        
+        session.setAttribute("searchObject", newSearch);
+ 
+        //-----FORWARD TO THE JSP PAGE-----//
+        //Create the url
+        String url = "/searchResults.jsp";
+
+        //instantiate a RequestDispatcher object and assign the url to it
+        RequestDispatcher  dispatcher = getServletContext().getRequestDispatcher(url);
+        
+        //Forward to jsp page
+        dispatcher.forward(request, response);
+ 
+    }
+ 
+}
