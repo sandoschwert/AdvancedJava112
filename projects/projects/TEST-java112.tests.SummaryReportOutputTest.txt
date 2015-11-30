@@ -1,0 +1,7 @@
+Testsuite: java112.tests.SummaryReportOutputTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.115 sec
+
+Testcase: classExists took 0.002 sec
+Testcase: writeOutputFileExistsTest took 0 sec
+Testcase: inputFileNameInReportTest took 0 sec
+Testcase: tokenCountInReportTest took 0 sec

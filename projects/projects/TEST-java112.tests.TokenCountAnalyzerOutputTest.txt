@@ -1,0 +1,13 @@
+Testsuite: java112.tests.TokenCountAnalyzerOutputTest
+Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.117 sec
+
+Testcase: classExists took 0.002 sec
+Testcase: writeOutputFileExistsTest took 0 sec
+Testcase: outputLineOneTest took 0 sec
+Testcase: outputLineTwoTest took 0 sec
+Testcase: outputLineThreeTest took 0 sec
+Testcase: outputLineFourTest took 0.001 sec
+Testcase: outputLineFiveTest took 0.001 sec
+Testcase: outputLineSixTest took 0 sec
+Testcase: outputLineSevenTest took 0 sec
+Testcase: outputLineEightTest took 0.005 sec

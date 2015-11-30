@@ -1,0 +1,6 @@
+Application: Analyzer
+Name: schwert
+Email: sschwert@madisoncollege.edu
+Input file: /home/student/Dropbox/projects/bigFile.txt
+Analyzed on: Mon Apr 27 00:37:54 CDT 2015
+Total token count: 4468588

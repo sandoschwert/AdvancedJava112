@@ -1,0 +1,6 @@
+Testsuite: java112.tests.AnalyzerDriverTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.206 sec
+
+Testcase: classExists took 0.018 sec
+Testcase: methodOneReturnTest took 0.011 sec
+Testcase: methodOneExistsTest took 0 sec

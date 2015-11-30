@@ -1,0 +1,11 @@
+Testsuite: java112.tests.KeywordAnalyzerOutputTest
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.137 sec
+
+Testcase: classExists took 0.002 sec
+Testcase: writeOutputFileExistsTest took 0 sec
+Testcase: outputLineOneTest took 0.013 sec
+Testcase: outputLineTwoTest took 0 sec
+Testcase: outputLineFourTest took 0 sec
+Testcase: outputLineFiveTest took 0 sec
+Testcase: outputLineSevenTest took 0 sec
+Testcase: outputLineEightTest took 0 sec
